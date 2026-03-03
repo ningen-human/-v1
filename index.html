@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>さぼぴょん - ジャンプゲーム</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="header">
+            <h1 class="game-title">🍉 さぼぴょん 🍉</h1>
+        </div>
+
+        <!-- モード選択画面 -->
+        <div id="modeScreen" class="screen">
+            <div class="start-content">
+                <img src="https://www.genspark.ai/api/files/s/d8C1jqJd" alt="サボてんちゃん" class="character-intro">
+                <h2>ゲームモードを選択</h2>
+                <div class="mode-buttons">
+                    <button id="timeAttackButton" class="mode-button">
+                        <span class="mode-icon">⏱️</span>
+                        <span class="mode-title">1分タイムアタック</span>
+                        <span class="mode-desc">制限時間内にハイスコアを目指そう！</span>
+                    </button>
+                    <button id="endlessButton" class="mode-button">
+                        <span class="mode-icon">♾️</span>
+                        <span class="mode-title">エンドレス</span>
+                        <span class="mode-desc">時間無制限！落下まで挑戦！</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- スタート画面 -->
+        <div id="startScreen" class="screen" style="display: none;">
+            <div class="start-content">
+                <img src="https://www.genspark.ai/api/files/s/d8C1jqJd" alt="サボてんちゃん" class="character-intro">
+                <h2 id="startTitle">サボてんちゃんと一緒に<br>どこまで高く登れるかな？</h2>
+                <div class="instructions">
+                    <p>🎮 <strong>遊び方</strong></p>
+                    <p>• ジョイスティックで左右移動</p>
+                    <p>• 緑の足場：通常ジャンプ</p>
+                    <p>• 🚀 黄色の足場：2倍ジャンプ！</p>
+                    <p id="timeLimitText">• 制限時間は1分間</p>
+                    <p>• できるだけ高く登ってハイスコアを目指そう！</p>
+                </div>
+                <button id="startButton" class="game-button">スタート</button>
+            </div>
+        </div>
+
+        <!-- ゲーム画面 -->
+        <div id="gameScreen" class="screen" style="display: none;">
+            <div class="game-info">
+                <div class="info-item">
+                    <span class="label">高さ：</span>
+                    <span id="score" class="value">0m</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">⏱️ <span id="timerLabel">残り時間</span>：</span>
+                    <span id="timer" class="value">60秒</span>
+                </div>
+            </div>
+            <canvas id="gameCanvas"></canvas>
+            
+            <!-- モバイル操作UI -->
+            <div class="mobile-controls">
+                <!-- 左側：ジョイスティック -->
+                <div class="joystick-container">
+                    <div id="joystick" class="joystick">
+                        <div class="joystick-outer">
+                            <div id="joystickKnob" class="joystick-knob"></div>
+                        </div>
+                    </div>
+                    <div class="control-label">移動</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ゲームオーバー画面 -->
+        <div id="gameOverScreen" class="screen" style="display: none;">
+            <div class="result-content">
+                <!-- ハイスコア更新時の特別表示 -->
+                <div id="highScoreCelebration" style="display: none;">
+                    <img src="https://www.genspark.ai/api/files/s/4H9e1hak" alt="乾杯" class="celebration-character">
+                    <h2 class="celebration-title">🎉 ハイスコア更新おめでとう 🎉</h2>
+                    <p class="celebration-text">🍻 乾杯！ 🍻</p>
+                </div>
+                
+                <h2 id="normalResultTitle">🎉 おつかれさまでした！ 🎉</h2>
+                <div class="result-box">
+                    <p class="result-label">最終記録</p>
+                    <p id="finalScore" class="final-score">0m</p>
+                    <p id="highScoreDisplay" class="high-score-display"></p>
+                </div>
+                <div class="result-message" id="resultMessage"></div>
+                <button id="restartButton" class="game-button">もう一度遊ぶ</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/game.js"></script>
+</body>
+</html>
