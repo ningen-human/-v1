@@ -199,6 +199,10 @@ function initGame() {
     // Canvas サイズを設定
     config.canvas.width = config.width;
     config.canvas.height = config.height;
+    
+    // 修正箇所：ブラウザ上の表示サイズをJS側でも明示的に制御
+    config.canvas.style.width = "100%";
+    config.canvas.style.height = "auto";
 
     // キャラクター画像を読み込み
     gameState.characterImage = new Image();
