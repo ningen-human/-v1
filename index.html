@@ -12,7 +12,6 @@
             <h1 class="game-title">🍉 さぼぴょん 🍉</h1>
         </div>
 
-        <!-- モード選択画面 -->
         <div id="modeScreen" class="screen">
             <div class="start-content">
                 <img src="https://www.genspark.ai/api/files/s/d8C1jqJd" alt="サボてんちゃん" class="character-intro">
@@ -32,7 +31,6 @@
             </div>
         </div>
 
-        <!-- スタート画面 -->
         <div id="startScreen" class="screen" style="display: none;">
             <div class="start-content">
                 <img src="https://www.genspark.ai/api/files/s/d8C1jqJd" alt="サボてんちゃん" class="character-intro">
@@ -49,38 +47,34 @@
             </div>
         </div>
 
-        <!-- ゲーム画面 -->
         <div id="gameScreen" class="screen" style="display: none;">
-            <div class="game-info">
-                <div class="info-item">
-                    <span class="label">高さ：</span>
-                    <span id="score" class="value">0m</span>
+            <div class="game-area-wrapper">
+                <div class="game-info">
+                    <div class="info-item">
+                        <span class="label">高さ：</span>
+                        <span id="score" class="value">0m</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">⏱️ <span id="timerLabel">残り時間</span>：</span>
+                        <span id="timer" class="value">60秒</span>
+                    </div>
                 </div>
-                <div class="info-item">
-                    <span class="label">⏱️ <span id="timerLabel">残り時間</span>：</span>
-                    <span id="timer" class="value">60秒</span>
-                </div>
+                <canvas id="gameCanvas"></canvas>
             </div>
-            <canvas id="gameCanvas"></canvas>
             
-            <!-- モバイル操作UI -->
             <div class="mobile-controls">
-                <!-- 左側：ジョイスティック -->
                 <div class="joystick-container">
                     <div id="joystick" class="joystick">
                         <div class="joystick-outer">
                             <div id="joystickKnob" class="joystick-knob"></div>
                         </div>
                     </div>
-                    <div class="control-label">移動</div>
-                </div>
+                    </div>
             </div>
         </div>
 
-        <!-- ゲームオーバー画面 -->
         <div id="gameOverScreen" class="screen" style="display: none;">
             <div class="result-content">
-                <!-- ハイスコア更新時の特別表示 -->
                 <div id="highScoreCelebration" style="display: none;">
                     <img src="https://www.genspark.ai/api/files/s/4H9e1hak" alt="乾杯" class="celebration-character">
                     <h2 class="celebration-title">🎉 ハイスコア更新おめでとう 🎉</h2>
