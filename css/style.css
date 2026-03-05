@@ -11,7 +11,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    padding: 20px; /* PCでの余白 */
 }
 
 .game-container {
@@ -21,6 +21,7 @@ body {
     border-radius: 20px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     overflow: hidden;
+    position: relative; /* 子要素（game-info）の absolute 配置の基準点 */
 }
 
 .header {
@@ -131,12 +132,17 @@ body {
 }
 
 /* ゲーム画面 */
+.game-area-wrapper {
+    position: relative; /* game-info を Canvas 上に重ねるため */
+}
+
 .game-info {
-    background: #f8f9fa;
-    padding: 15px;
+    background: rgba(248, 249, 250, 0.8); /* Canvas が透けるように半透明に */
+    padding: 10px; /* パディングを減らす */
     display: flex;
     justify-content: space-around;
-    border-bottom: 3px solid #66bb6a;
+    border-bottom: 2px solid #66bb6a;
+    width: 100%;
 }
 
 .info-item {
@@ -148,10 +154,11 @@ body {
 .label {
     font-weight: bold;
     color: #555;
+    font-size: 0.9em; /* 文字を少し小さく */
 }
 
 .value {
-    font-size: 1.3em;
+    font-size: 1.1em; /* 文字を少し小さく */
     font-weight: bold;
     color: #66bb6a;
 }
@@ -159,9 +166,9 @@ body {
 #gameCanvas {
     display: block;
     width: 100%;
-    /* 修正箇所：高さを固定せず、アスペクト比を維持 */
+    /* PCでのデフォルトのアスペクト比 (600x900) */
     height: auto;
-    aspect-ratio: 1 / 1; 
+    aspect-ratio: 2 / 3; 
     background: linear-gradient(to bottom, #87ceeb 0%, #e0f7ff 100%);
     cursor: pointer;
 }
@@ -171,7 +178,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    padding: 10px; /* パディングを極限まで減らす */
     background: #f8f9fa;
     border-top: 2px solid #e0e0e0;
 }
@@ -180,7 +187,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 5px; /* ギャップを小さく */
 }
 
 .joystick {
@@ -189,11 +196,11 @@ body {
 }
 
 .joystick-outer {
-    width: 100px;
-    height: 100px;
+    width: 64px; /* PC・デフォルトでもジョイスティックを20%小さく (100px -> 80px -> 64px) */
+    height: 64px;
     border-radius: 50%;
     background: linear-gradient(135deg, #e0e0e0 0%, #f5f5f5 100%);
-    border: 3px solid #66bb6a;
+    border: 2px solid #66bb6a; /* 境界線を細く */
     box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.1), 0 4px 15px rgba(102, 187, 106, 0.2);
     display: flex;
     justify-content: center;
@@ -202,62 +209,17 @@ body {
 }
 
 .joystick-knob {
-    width: 40px;
-    height: 40px;
+    width: 28px; /* ノブも小さく (40px -> 32px -> 28px) */
+    height: 28px;
     border-radius: 50%;
     background: linear-gradient(135deg, #66bb6a 0%, #81c784 100%);
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); /* 影を小さく */
     position: absolute;
     cursor: pointer;
     transition: transform 0.1s ease;
 }
 
-.jump-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-}
-
-.jump-button {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #ff9800 0%, #ffc107 100%);
-    border: 4px solid #f57c00;
-    color: white;
-    font-size: 1.2em;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 4px 15px rgba(255, 152, 0, 0.4);
-    transition: all 0.1s ease;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 5px;
-    touch-action: none;
-}
-
-.jump-button:active {
-    transform: scale(0.9);
-    box-shadow: 0 2px 8px rgba(255, 152, 0, 0.6);
-}
-
-.jump-icon {
-    font-size: 1.8em;
-    line-height: 1;
-}
-
-.jump-text {
-    font-size: 0.7em;
-}
-
-.control-label {
-    font-size: 0.9em;
-    color: #666;
-    font-weight: bold;
-}
+/* 「移動」の文字用のラベルは HTML から削除済み */
 
 /* モード選択画面 */
 .mode-buttons {
@@ -412,10 +374,80 @@ body {
     border-radius: 10px;
 }
 
-/* レスポンシブ対応 */
+/* ★★★★★ レスポンシブ対応 (スマホ向けの大幅な余白・UI調整) ★★★★★ */
 @media (max-width: 600px) {
-    .game-title {
-        font-size: 1.5em;
+    body {
+        padding: 0; /* 画面端の紫の余白を０に */
+        background: #f8f9fa; /* スマホ背景を白っぽく */
+    }
+
+    .game-container {
+        max-width: 100%; /* 横幅いっぱいに */
+        width: 100vw;
+        height: 100vh; /* 高さもいっぱいにする準備 */
+        border-radius: 0; /* 角丸をなくす */
+        box-shadow: none; /* 影をなくす */
+        display: flex;
+        flex-direction: column;
+    }
+
+    .header {
+        display: none; /* タイトル「さぼぴょん」を非表示に */
+    }
+
+    .screen {
+        padding: 10px; /* パディングを大幅に減らす */
+        flex-grow: 1; /* 画面いっぱいに広げる */
+        display: flex;
+        flex-direction: column;
+        justify-content: center; /* 中央配置 */
+    }
+
+    /* ゲームプレイ画面の調整 */
+    #gameScreen {
+        padding: 0; /* ゲーム画面の余白を０に */
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .game-area-wrapper {
+        flex-grow: 1; /* Canvas エリアを最大化 */
+        position: relative;
+        overflow: hidden; /* Canvas からはみ出たものを隠す */
+    }
+
+    .game-info {
+        position: absolute; /* Canvas 上部に重ねて配置 */
+        top: 0;
+        left: 0;
+        z-index: 10; /* Canvas より手前に */
+        background: rgba(248, 249, 250, 0.7); /* 少し透けさせる */
+        padding: 5px; /* さらに小さく */
+        border-bottom: none; /* 境界線を消す */
+    }
+
+    #gameCanvas {
+        width: 100%;
+        height: 100%; /* Wrapper いっぱいに広げる */
+        aspect-ratio: auto; /* CSS でアスペクト比を固定しない */
+        object-fit: cover; /* 画面サイズに合わせてトリミングしつつ全画面表示 */
+    }
+
+    /* モバイル操作UIの調整 */
+    .mobile-controls {
+        padding: 5px 0 10px; /* 上下の余白を極小に */
+        border-top: none; /* 境界線を消す */
+        background: rgba(248, 249, 250, 0.9); /* 少し透けさせる */
+    }
+
+    .joystick-outer {
+        /* スマホでも縮小したサイズを維持 (64px) */
+    }
+
+    /* ゲームオーバー画面などの調整 */
+    .result-content {
+        padding: 20px;
     }
 
     .start-content h2 {
@@ -423,31 +455,7 @@ body {
     }
 
     .character-intro {
-        width: 150px;
-    }
-
-    #gameCanvas {
-        height: auto;
-    }
-
-    .joystick-outer {
-        width: 80px;
-        height: 80px;
-    }
-
-    .joystick-knob {
-        width: 35px;
-        height: 35px;
-    }
-
-    .jump-button {
-        width: 80px;
-        height: 80px;
-        font-size: 1em;
-    }
-
-    .jump-icon {
-        font-size: 1.5em;
+        width: 120px; /* 少し小さく */
     }
 
     .final-score {
