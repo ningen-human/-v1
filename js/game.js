@@ -3,7 +3,7 @@ const config = {
     canvas: null,
     ctx: null,
     width: 600,
-    height: 600,
+    height: 900, // ★縦長に広げる (600 -> 900)
     gravity: 0.5,
     jumpForce: -18, // 1.5倍に強化（元: -12）
     gameTime: 60, // 1分間
@@ -37,7 +37,7 @@ class Player {
         this.width = 90; // 1.5倍に拡大（元: 60）
         this.height = 120; // 1.5倍に拡大（元: 80）
         this.x = config.width / 2 - this.width / 2;
-        this.y = config.height - 200;
+        this.y = config.height - 250; // ★初期位置を少し上げる (200 -> 250)
         this.velocityX = 0;
         this.velocityY = 0;
         this.speed = 5;
@@ -59,11 +59,11 @@ class Player {
             this.x = -this.width;
         }
 
-        // 上に上がったらスコア更新
-        if (this.y < config.height / 2) {
-            const heightIncrease = (config.height / 2 - this.y) / 10;
+        // 上に上がったらスコア更新 (★カメラ追従を開始する高さを調整)
+        if (this.y < config.height * 0.4) { // 画面の上部40%を超えたら
+            const heightIncrease = (config.height * 0.4 - this.y) / 10;
             gameState.cameraY += heightIncrease;
-            this.y = config.height / 2;
+            this.y = config.height * 0.4;
             
             // プラットフォームを下に移動
             gameState.platforms.forEach(platform => {
@@ -177,12 +177,12 @@ function generatePlatforms() {
     gameState.platforms = [];
     
     // 初期プラットフォーム（スタート位置）
-    gameState.platforms.push(new Platform(config.width / 2 - 40, config.height - 100, 80));
+    gameState.platforms.push(new Platform(config.width / 2 - 40, config.height - 150, 80)); // ★初期位置を調整
     
-    // ランダムにプラットフォームを配置
-    for (let i = 0; i < 15; i++) {
+    // ランダムにプラットフォームを配置 (★生成範囲を縦長に広げる)
+    for (let i = 0; i < 20; i++) { // 生成数を増やす (15 -> 20)
         const x = Math.random() * (config.width - 80);
-        const y = config.height - 200 - (i * 80);
+        const y = config.height - 250 - (i * 90); // ★間隔を少し広げる (80 -> 90)
         const width = 60 + Math.random() * 40;
         // 20%の確率で2倍ジャンプ台を配置
         const type = Math.random() < 0.2 ? 'boost' : 'normal';
@@ -199,10 +199,11 @@ function initGame() {
     // Canvas サイズを設定
     config.canvas.width = config.width;
     config.canvas.height = config.height;
-    
-    // 修正箇所：ブラウザ上の表示サイズをJS側でも明示的に制御
+
+    // ★CSSでのアスペクト比固定を解除し、JS側でも明示的に制御
     config.canvas.style.width = "100%";
     config.canvas.style.height = "auto";
+    config.canvas.style.aspectRatio = `${config.width} / ${config.height}`; // 2 / 3
 
     // キャラクター画像を読み込み
     gameState.characterImage = new Image();
@@ -336,11 +337,11 @@ function setupInput() {
     });
 }
 
-// ジョイスティック設定
+// ジョイスティック設定 (★縮小に合わせて移動範囲を調整)
 function setupJoystick() {
     const joystick = document.getElementById('joystick');
     const knob = document.getElementById('joystickKnob');
-    const maxDistance = 30; // ジョイスティックの最大移動距離
+    const maxDistance = 24; // ★ジョイスティックの最大移動距離を縮小 (30 -> 24: 64pxの3/8)
     let startX = 0, startY = 0;
     let isDragging = false;
 
@@ -501,11 +502,11 @@ function gameLoop() {
         }
     });
 
-    // 新しいプラットフォームを生成
-    if (gameState.platforms[gameState.platforms.length - 1].y > 0) {
-        for (let i = 0; i < 3; i++) {
+    // 新しいプラットフォームを生成 (★縦長化に合わせて生成ロジックを微調整)
+    if (gameState.platforms.length > 0 && gameState.platforms[gameState.platforms.length - 1].y > -config.height * 0.2) {
+        for (let i = 0; i < 5; i++) { // 一度に生成する数を増やす (3 -> 5)
             const x = Math.random() * (config.width - 80);
-            const y = gameState.platforms[gameState.platforms.length - 1].y - 80 - Math.random() * 40;
+            const y = gameState.platforms[gameState.platforms.length - 1].y - 90 - Math.random() * 50; // ★間隔とランダム幅を広げる
             const width = 60 + Math.random() * 40;
             // 20%の確率で2倍ジャンプ台を配置
             const type = Math.random() < 0.2 ? 'boost' : 'normal';
